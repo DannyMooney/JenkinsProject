@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Check out the code from your version control system
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Set up Maven (adjust the tool name if necessary)
+                tools {
+                    maven 'Maven3'
+                }
+
+                // Run Maven build
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run your tests
+                sh 'mvn test'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Deploy your application (if applicable)
+                // Add deployment steps here
+            }
+        }
+    }
+
+    post {
+        success {
+            // Perform actions when the pipeline succeeds
+            echo 'Pipeline succeeded!'
+
+            // Optionally, you can archive artifacts or trigger other jobs here
+        }
+
+        failure {
+            // Perform actions when the pipeline fails
+            echo 'Pipeline failed!'
+        }
+    }
+}
